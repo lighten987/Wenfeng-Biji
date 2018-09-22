@@ -176,8 +176,8 @@ print(sess.run([W, b]))
 输出结果为  
 [array([-0.9999969], dtype=float32), array([ 0.99999082], dtype=float32)]  
 
----------------------
+---------------------  
 
-本文来自 lgx06 的CSDN 博客 ，全文地址请点击：https://blog.csdn.net/lengguoxing/article/details/78456279?utm_source=copy 
+本文来自 lgx06 的CSDN 博客 ，全文地址请点击：https://blog.csdn.net/lengguoxing/article/details/78456279?utm_source=copy   
 
 
