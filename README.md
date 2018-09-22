@@ -80,3 +80,38 @@ Logistic 回归的正则化
     
 **非线性假设**  
 特征n的个数太多时，用线性分类，就会有很多的项数，计算量极其庞大   
+  
+  
+  
+  
+  
+  
+    
+     
+     
+     
+***TensorFlow入门教程相关***  
+TensorFlow的数据中央控制单元是tensor(张量)，一个tensor由一系列的原始值组成，这些值被形成一个任意维数的数组。  
+一个tensor的列就是它的维度。  
+import tensorflow as tf   TensorFlow 程序典型的导入语句，作用是：赋予Python访问TensorFlow类(classes)，方法（methods），符号(symbols)  
+
+TensorFlow核心程序由2个独立部分组成： a:Building the computational graph构建计算图    b:Running the computational graph运行计算图    
+一个computational graph(计算图)是一系列的TensorFlow操作排列成一个节点图 。  
+node1 = tf.constant(3.0, dtype=tf.float32)  
+node2 = tf.constant(4.0)# also tf.float32 implicitly  
+print(node1, node2)  
+最后打印结果：Tensor("Const:0", shape=(), dtype=float32) Tensor("Const_1:0",shape=(), dtype=float32)  
+要想打印最终结果，我们必须用到session:一个session封装了TensorFlow运行时的控制和状态  
+sess = tf.Session()  
+print(sess.run([node1, node2]))  
+我们可以组合Tensor节点操作(操作仍然是一个节点)来构造更加复杂的计算  
+node3 = tf.add(node1, node2)  
+print("node3:", node3)  
+print("sess.run(node3):", sess.run(node3))  
+打印结果是：
+node3:Tensor("Add:0", shape=(), dtype=float32)  
+sess.run(node3):7.0  
+
+
+
+ 
