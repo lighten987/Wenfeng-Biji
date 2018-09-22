@@ -122,22 +122,62 @@ print(sess.run(adder_node, {a: [1,3], b: [2,4]}))
 7.5  
 [3.  7.]  
 操作的可迭代性，意为定义过的方法可作为新的成员变量在新的方法中被使用  
-add_and_triple = adder_node *3.  
+    add_and_triple = adder_node *3.  
 print(sess.run(add_and_triple, {a:3, b:4.5}))  
 输出结果是：  
 22.5  
 
 在机器学习中，我们通常想让一个模型可以接收任意多个输入，比如大于1个，好让这个模型可以被训练，在不改变输入的情况下,  
 我们需要改变这个计算图去获得一个新的输出。变量允许我们增加可训练的参数到这个计算图中，它们被构造成有一个类型和初始值：  
-W = tf.Variable([.3], dtype=tf.float32)  
+    W = tf.Variable([.3], dtype=tf.float32)  
 b = tf.Variable([-.3], dtype=tf.float32)  
 x = tf.placeholder(tf.float32)  
 linear_model = W*x + b  
+**当你调用tf.constant时常量被初始化，它们的值是不可以改变的，而变量当你调用tf.Variable时没有被初始化**  
+在TensorFlow程序中要想初始化这些变量，你必须明确调用一个特定的操作，如下：  
+    init = tf.global_variables_initializer()  
+sess.run(init)  
+要实现初始化所有全局变量的TensorFlow子图的的处理是很重要的，直到我们调用sess.run，这些变量都是未被初始化的。  
+既然x是一个占位符，我们就可以同时地对多个x的值进行求值linear_model，例如：  
+    print(sess.run(linear_model, {x: [1,2,3,4]}))  
+求值linear_model   
+输出为  
+[0.  0.30000001  0.60000002  0.90000004]  
 
+我们已经创建了一个模型，但是我们至今不知道它是多好，在这些训练数据上对这个模型进行评估，我们需要一个  
+y占位符来提供一个期望的值，并且我们需要写一个loss function(损失函数)，一个损失函数度量当前的模型和提供  
+的数据有多远，我们将会使用一个标准的损失模式来线性回归，它的增量平方和就是当前模型与提供的数据之间的损失，  
+linear_model - y创建一个向量，其中每个元素都是对应的示例错误增量。这个错误的方差我们称为tf.square。然后，  
+我们合计所有的错误方差用以创建一个标量，用tf.reduce_sum抽象出所有示例的错误。 
+    y = tf.placeholder(tf.float32)  
+squared_deltas = tf.square(linear_model - y)  
+loss = tf.reduce_sum(squared_deltas)  
+print(sess.run(loss, {x: [1,2,3,4], y: [0, -1, -2, -3]}))  
+输出的结果为  
+23.66  
+我们分配一个值给W和b(得到一个完美的值是-1和1)来手动改进这一点,一个变量被初始化一个值会调用tf.Variable，  
+但是可以用tf.assign来改变这个值，例如：fixW = tf.assign(W, [-1.])  
+    fixb = tf.assign(b, [1.])  
+sess.run([fixW, fixb])  
+print(sess.run(loss, {x: [1,2,3,4], y: [0, -1, -2, -3]}))  
+最终打印的结果是：  
+0.0  
 
-
-
-
-
-
+tf.train APITessorFlow提供optimizers(优化器)，它能慢慢改变每一个变量以最小化损失函数，最简单的优化器是  
+gradient descent(梯度下降)，它根据变量派生出损失的大小,来修改每个变量。通常手工计算变量符号是乏味且容易出错的，  
+因此，TensorFlow使用函数tf.gradients给这个模型一个描述，从而能自动地提供衍生品，简而言之，优化器通常会为你做这个。例如：  
+    optimizer = tf.train.GradientDescentOptimizer(0.01)  
+train = optimizer.minimize(loss)  
+sess.run(init)# reset values to incorrect defaults.  
+for iin range(1000):  
+   sess.run(train, {x: [1,2,3,4], y: [0, -1, -2, -3]})  
  
+print(sess.run([W, b]))  
+输出结果为  
+[array([-0.9999969], dtype=float32), array([ 0.99999082], dtype=float32)]  
+
+---------------------
+
+本文来自 lgx06 的CSDN 博客 ，全文地址请点击：https://blog.csdn.net/lengguoxing/article/details/78456279?utm_source=copy 
+
+
