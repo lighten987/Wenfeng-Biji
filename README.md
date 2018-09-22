@@ -112,6 +112,32 @@ print("sess.run(node3):", sess.run(node3))
 node3:Tensor("Add:0", shape=(), dtype=float32)  
 sess.run(node3):7.0  
 
+用placeholders(占位符)来预先定义公式方法，后面再调用sess.run()函数去填充公式，计算得值  
+a = tf.placeholder(tf.float32)  
+b = tf.placeholder(tf.float32)  
+adder_node = a + b      # + provides a shortcut for tf.add(a, b)  
+print(sess.run(adder_node, {a:3, b:4.5}))  
+print(sess.run(adder_node, {a: [1,3], b: [2,4]}))  
+结果是：  
+7.5  
+[3.  7.]  
+操作的可迭代性，意为定义过的方法可作为新的成员变量在新的方法中被使用  
+add_and_triple = adder_node *3.  
+print(sess.run(add_and_triple, {a:3, b:4.5}))  
+输出结果是：  
+22.5  
+
+在机器学习中，我们通常想让一个模型可以接收任意多个输入，比如大于1个，好让这个模型可以被训练，在不改变输入的情况下,  
+我们需要改变这个计算图去获得一个新的输出。变量允许我们增加可训练的参数到这个计算图中，它们被构造成有一个类型和初始值：  
+W = tf.Variable([.3], dtype=tf.float32)  
+b = tf.Variable([-.3], dtype=tf.float32)  
+x = tf.placeholder(tf.float32)  
+linear_model = W*x + b  
+
+
+
+
+
 
 
  
