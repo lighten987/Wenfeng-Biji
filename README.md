@@ -226,3 +226,11 @@ Keras默认的数据组织形式在~/.keras/keras.json中规定，可查看该�
   
 顺便说一句，Keras中用的优化器SGD是stochastic gradient descent的缩写，但不代表是一个样本就更新一回，还是基于mini-batch的。  
   
+  
+**epochs**  
+  
+训练过程中数据循环轮的次数  
+  
+  
+本文来自  
+https://keras-cn.readthedocs.io/en/latest/for_beginners/concepts/  
