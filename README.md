@@ -234,3 +234,6 @@ Keras默认的数据组织形式在~/.keras/keras.json中规定，可查看该�
   
 本文来自  
 https://keras-cn.readthedocs.io/en/latest/for_beginners/concepts/  
+  
+  
+  
