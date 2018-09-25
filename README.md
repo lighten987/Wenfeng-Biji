@@ -232,6 +232,73 @@ Keras默认的数据组织形式在~/.keras/keras.json中规定，可查看该�
 训练过程中数据循环轮的次数  
   
   
+  
+  
+***Keras使用陷阱***  
+  
+  
+**TF卷积核与TH卷积核**  
+Keras两个后端，Theano和Tensorflow  
+若卷积核与使用的后端不匹配，不会报错，因为它们的shape一致，但是结果肯定是错的。  
+检测这个点的方法：在使用预训练模型时，建议首先找一些测试样本，看看模型的表现是否与预计的一致。  
+对卷积核的转换方法：可以使用utils.convert_all_kernels_in_model对模型的卷积核进行转换  
+  
+**向BN层中载入权重**  
+  
+如果你不知道从哪里淘来一个预训练好的BN层，想把它的权重载入到Keras中，要小心参数的载入顺序。  
+  
+一个典型的例子是，将caffe的BN层参数载入Keras中，caffe的BN由两部分构成，bn层的参数是mean，std，scale层的参数是gamma，beta  
+  
+按照BN的文章顺序，似乎载入Keras BN层的参数应该是[mean, std, gamma, beta]  
+  
+然而不是的，Keras的BN层参数顺序应该是[gamma, beta, mean, std]，这是因为gamma和beta是可训练的参数，而mean和std不是  
+  
+Keras的可训练参数在前，不可训练参数在后  
+  
+错误的权重顺序不会引起任何报错，因为它们的shape完全相同  
+  
+**shuffle和validation_split的顺序**  
+  
+模型的fit函数有两个参数，shuffle用于将数据打乱，validation_split用于在没有提供验证集的时候，按一定比例从训练集中取出一部分作为验证集  
+  
+这里有个陷阱是，程序是先执行validation_split，再执行shuffle的，所以会出现这种情况：   
+   
+假如你的训练集是有序的，比方说正样本在前负样本在后，又设置了validation_split，那么你的验证集中很可能将全部是负样本  
+  
+同样的，这个东西不会有任何错误报出来，因为Keras不可能知道你的数据有没有经过shuffle，保险起见如果你的数据是没shuffle过的，最好手动shuffle一下  
+  
+**Merge层的层对象与函数方法**  
+  
+Keras定义了一套用于融合张量的方法，位于keras.layers.Merge，里面有两套工具，以大写字母开头的是Keras Layer类，使用这种工具是需要实例化一个Layer对象，然后再使用。以小写字母开头的是张量函数方法，本质上是对Merge Layer对象的一个包装，但使用更加方便一些。注意辨析。  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 本文来自  
 https://keras-cn.readthedocs.io/en/latest/for_beginners/concepts/  
   
