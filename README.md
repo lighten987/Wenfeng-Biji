@@ -184,7 +184,7 @@ print(sess.run([W, b]))
   
 **1127**  
 基于深度学习的目标检测(object detection)技术演进：R-CNN、Fast R-CNN、Faster R-CNN   
-object detection技术的演进：R-CNN->SppNET->Fast-RCNN->Faster-RCNN  
+object detection技术的演进：R-CNN->SPPNet->Fast-RCNN->Faster-RCNN  
 任务：图像识别 classification + 定位 localization   
 评估方法： 图像识别输出物体的类别，使用准确率 定位输出方框再图片中的位置，用检测评价函数 intersection-over-union ( IOU )   
 intersection-over-union ( IOU )：模型产生的目标窗口和原来标记窗口的交叠率，即检测结果(DetectionResult)与 Ground Truth 的交集比上它们的并集，即为检测的准确率 IoU  
