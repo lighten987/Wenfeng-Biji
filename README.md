@@ -215,4 +215,11 @@ Jtrain(θ)=1/(2m)∑mi=1(hθ(x(i))−y(i))2
 MBGD在每次更新参数时使用b个样本（b一般为10）  
 Batch gradient descent: Use all examples in each iteration；  
 Stochastic gradient descent: Use 1 example in each iteration；  
-Mini-batch gradient descent: Use b examples in each iteration.  
+Mini-batch gradient descent: Use b examples in each iteration.   
+  
+R-CNN的总算法流程，简单回顾一下：    
+1、首先通过选择性搜索，对待检测的图片进行搜索出2000个候选窗口。  
+2、把这2k个候选窗口的图片都缩放到227x227，然后分别输入CNN中，每个候选窗台提取出一个特征向量，也就是说利用CNN进行提取特征向量。  
+3、把上面每个候选窗口的对应特征向量，利用SVM算法进行分类识别。   
+  
+  
