@@ -182,7 +182,7 @@ print(sess.run([W, b]))
   
   
   
-**1127**  
+**R-CNN相关**  
 基于深度学习的目标检测(object detection)技术演进：R-CNN、Fast R-CNN、Faster R-CNN   
 object detection技术的演进：R-CNN->SPPNet->Fast-RCNN->Faster-RCNN  
 任务：图像识别 classification + 定位 localization   
